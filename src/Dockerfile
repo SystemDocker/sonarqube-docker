@@ -2,7 +2,9 @@ FROM openjdk:8-alpine
 
 MAINTAINER Fabrizio Lungo <docker@flungo.me>
 
-ENV SONAR_VERSION=6.2 \
+ARG version=6.2
+
+ENV SONAR_VERSION=$version \
     SONARQUBE_HOME=/opt/sonarqube \
     # Database configuration
     # Defaults to using H2
@@ -14,6 +16,7 @@ ENV SONAR_VERSION=6.2 \
 EXPOSE 9000
 
 RUN set -x \
+    # Only for alpine
     && apk add --no-cache gnupg unzip curl \
 
     # pub   2048R/D26468DE 2015-05-25
@@ -22,7 +25,9 @@ RUN set -x \
     # sub   2048R/06855C1D 2015-05-25
     && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys F1182E81C792928921DBCAB4CFCA4A29D26468DE \
 
+    # Only for alpine
     && mkdir /opt \
+
     && cd /opt \
     && curl -o sonarqube.zip -fSL https://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-$SONAR_VERSION.zip \
     && curl -o sonarqube.zip.asc -fSL https://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-$SONAR_VERSION.zip.asc \
