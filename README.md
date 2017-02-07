@@ -17,7 +17,7 @@ SonarQube is an open source platform for continuous inspection of code quality.
 The server is started this way:
 
 ```console
-$ docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube
+$ docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 systemdocker/sonarqube
 ```
 
 To analyse a project:
@@ -34,6 +34,15 @@ mvn sonar:sonar -Dsonar.host.url=http://$(boot2docker ip):9000 -Dsonar.jdbc.url=
 
 By default, the image will use an embedded H2 database that is not suited for production.
 
+### Linked container
+
+```console
+$ docker run -d --name sonarqube_pgsql -e POSTGRES_PASSWORD=mysecretpassword postgres
+$ docker run -d --name sonarqube --link sonarqube_pgsql:postgresql -p 9000:9000 -p 9092:9092 systemdocker/sonarqube
+```
+
+### Manual configuration
+
 The production database is configured with these variables: `SONARQUBE_JDBC_USERNAME`, `SONARQUBE_JDBC_PASSWORD` and `SONARQUBE_JDBC_URL`.
 
 ```console
@@ -42,7 +51,7 @@ $ docker run -d --name sonarqube \
 	-e SONARQUBE_JDBC_USERNAME=sonar \
 	-e SONARQUBE_JDBC_PASSWORD=sonar \
 	-e SONARQUBE_JDBC_URL=jdbc:postgresql://localhost/sonar \
-	sonarqube
+	systemdocker/sonarqube
 ```
 
 More recipes can be found [here](https://github.com/SonarSource/docker-sonarqube/blob/master/recipes.md).

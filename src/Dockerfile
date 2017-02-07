@@ -5,12 +5,7 @@ MAINTAINER Fabrizio Lungo <docker@flungo.me>
 ARG version=6.2
 
 ENV SONAR_VERSION=$version \
-    SONARQUBE_HOME=/opt/sonarqube \
-    # Database configuration
-    # Defaults to using H2
-    SONARQUBE_JDBC_USERNAME=sonar \
-    SONARQUBE_JDBC_PASSWORD=sonar \
-    SONARQUBE_JDBC_URL=
+    SONARQUBE_HOME=/opt/sonarqube
 
 # Http port
 EXPOSE 9000
